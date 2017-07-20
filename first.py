@@ -1,9 +1,8 @@
 from PIL import Image as im
 import numpy as np
 from matplotlib import pyplot as plt
-#import matplotlib.pyplot as plt
 import time
-#import scipy.stat
+from collections import Counter
  
 #trial run to run on SentDex code
 #thresholding
@@ -30,7 +29,6 @@ def threshold(imageArray):
  
     for eachRow in imageArray:
         for eachPix in eachRow:
-            #print (eachPix)
             val1 = eachPix[:3]
             avgNum = reduce(lambda x, y: x + y, val1/len(val1))
             balanceAr.append(avgNum)
@@ -53,41 +51,86 @@ def threshold(imageArray):
                 eachPix[2] = 0
                 eachPix[3] = 255
     return newAr
- 
-i = im.open('D:\SentDex\images\\numbers\\0.1.png')
-iar = np.array(i)
- 
-i2 = im.open('D:\SentDex\images\\numbers\\y0.4.png')
-iar2 = np.array(i2)
- 
-i3 = im.open('D:\SentDex\images\\numbers\\y0.5.png')
-iar3 = np.array(i3)
- 
-i4 = im.open('D:\SentDex\images\\sentdex.png')
-iar4 = np.array(i4)
 
-createExamples()
- 
-#iar3 = threshold(iar3)
-#iar2 = threshold(iar2)
-#iar4 = threshold(iar4)
- 
-'''
-threshold(iar)
-threshold(iar3)
-threshold(iar2)
-threshold(iar4)
- 
-fig = plt.figure()
-ax1 = plt.subplot2grid((8,6),(0,0),rowspan = 4,colspan = 3)
-ax2 = plt.subplot2grid((8,6),(4,0),rowspan = 4,colspan = 3)
-ax3 = plt.subplot2grid((8,6),(0,3),rowspan = 4,colspan = 3)
-ax4 = plt.subplot2grid((8,6),(4,3),rowspan = 4,colspan = 3)
- 
-ax1.imshow(iar)
-ax2.imshow(iar2)
-ax3.imshow(iar3)
-ax4.imshow(iar4)
- 
-plt.show()
- '''
+def WhatNumIsThis(filePath):
+    matchedAr = []
+    loadExamps = open('D:\SentDex\\numArEx.txt','r').read()
+    #loadExamps = open('D:\SentDex\\numArEx.txt','r')
+    loadExamps = loadExamps.split('\n')
+
+    i = im.open(filePath)
+    iar = np.array(i)
+    iarl = iar.tolist()
+
+    inQuestion = str(iarl)
+
+    for eachExample in loadExamps:
+        if len(eachExample) > 3:
+            splitEx = eachExample.split('::')
+            currentNum = splitEx[0]
+            currentAr = splitEx[1]
+
+            eachPixEx = currentAr.split('],')
+            eachPixInQ = inQuestion.split('],')
+
+            x = 0
+            while x < len(eachPixEx):
+                if eachPixEx[x] == eachPixInQ[x]:
+                    matchedAr.append(int(currentNum))
+                x += 1
+
+    print matchedAr
+    x = Counter(matchedAr)
+    print x
+
+    graphX = []
+    graphY = []
+
+    for eachThing in x:
+        print eachThing
+        graphX.append(eachThing)
+
+        print x[eachThing]
+        graphY.append(x[eachThing])
+
+    fig = plt.figure()
+    ax1 = plt.subplot2grid((4,4), (0,0), rowspan = 1, colspan = 4)
+    ax2 = plt.subplot2grid((4,4), (1,0), rowspan = 3, colspan = 4)
+
+    ax1.imshow(iar)
+    ax2.bar(graphX, graphY, align='center')
+    plt.ylim(400)
+
+    xloc = plt.MaxNLocator(12)
+
+    ax2.xaxis.set_major_locator(xloc)
+
+    
+    plt.show()
+   
+WhatNumIsThis('D:\SentDex\\images\\test.png')
+
+#def whatNumIsThis(filePath):     
+#    matchedAr = []     
+#    loadExamps = open('numArEx.txt' ,'r').read()     
+#    loadExamps = loadExamps.split('\n')     
+#    i = Image.open(filePath)     
+#    iar = np.array(i)     
+#    iarl = iar.tolist()     
+#    inQuestion = str(iarl)     
+#    for eachExample in loadExamps:         
+#        if len(eachExample) > 3:             
+            
+#            splitEx = eachExample.split('::')             
+#            currentNum = splitEx[0]             
+#            currentAr = splitEx[1]                          
+#            eachPixEx = currentAr.split('],')             
+#            eachPixInQ = inQuestion.split('],')             
+#            x = 0             
+#            while x < len(eachPixEx):                 
+#                if eachPixEx[x] == eachPixInQ[x]:                     
+#                    matchedAr.append(int(currentNum))                 
+#                    x += 1     
+#                    print matchedAr     
+#                    x = Counter(matchedAr)     
+#                    print x
