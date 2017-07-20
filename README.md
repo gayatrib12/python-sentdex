@@ -38,3 +38,9 @@
   c)Issue - Can't find a usable init.tcl in the following directories windows     
   Solution - Copy the contents of C:\Python27\tcl into C:\Python27\Lib.
   
+  d)Issue - ValueError: assignment destination is read-only
+  Solution - using np.array() instead of np.asarray() solved the problem
+  As per https://philbull.wordpress.com/2013/06/27/making-numpy-arrays-read-only/
+  
+  e)
+  
