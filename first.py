@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import time
  
+#trial run to run on SentDex code
 #thresholding
  
 def threshold(imageArray):
@@ -34,16 +35,16 @@ def threshold(imageArray):
                 eachPix[3] = 0
     return newAr
  
-i = im.open('F:\SentDex\images\\numbers\\0.1.png')
+i = im.open('D:\SentDex\images\\numbers\\0.1.png')
 iar = np.array(i)
  
-i2 = im.open('F:\SentDex\images\\numbers\\y0.4.png')
+i2 = im.open('D:\SentDex\images\\numbers\\y0.4.png')
 iar2 = np.array(i2)
  
-i3 = im.open('F:\SentDex\images\\numbers\\y0.5.png')
+i3 = im.open('D:\SentDex\images\\numbers\\y0.5.png')
 iar3 = np.array(i3)
  
-i4 = im.open('F:\SentDex\images\\sentdex.png')
+i4 = im.open('D:\SentDex\images\\sentdex.png')
 iar4 = np.array(i4)
  
 threshold(iar2)
