@@ -1,10 +1,28 @@
 from PIL import Image as im
 import numpy as np
-import matplotlib.pyplot as plt
+from matplotlib import pyplot as plt
+#import matplotlib.pyplot as plt
 import time
+#import scipy.stat
  
 #trial run to run on SentDex code
 #thresholding
+
+def createExamples():
+    numberArrayExamples = open('D:\SentDex\\numArEx.txt','a')
+    numbersWeHave = range(0,10)
+    versionsWeHave = range(1,10)
+
+    for eachNum in numbersWeHave:
+        for eachVer in versionsWeHave:
+            #print str(eachNum) + '.' +str(eachVer)
+            imgFilePath = 'D:\SentDex\images\\numbers\\'+str(eachNum) + '.' +str(eachVer)+'.png'
+            ei = im.open(imgFilePath)
+            eiar = np.array(ei)
+            eiar1 = str(eiar.tolist())
+
+            lineToWrite = str(eachNum) + '::'+eiar1+'\n'
+            numberArrayExamples.write(lineToWrite)
  
 def threshold(imageArray):
     balanceAr = []
@@ -19,7 +37,8 @@ def threshold(imageArray):
  
             #time.sleep(5)
  
-    balance = reduce(lambda x, y: x + y, balanceAr/len(balanceAr))
+    balance = reduce(lambda x, y: x + y, balanceAr/np.mean(balanceAr))
+    #balance = np.sum(balanceAr)/np.mean(balanceAr)
  
     for eachRow in newAr:
         for eachix in eachRow:
@@ -32,7 +51,7 @@ def threshold(imageArray):
                 eachPix[0] = 0
                 eachPix[1] = 0
                 eachPix[2] = 0
-                eachPix[3] = 0
+                eachPix[3] = 255
     return newAr
  
 i = im.open('D:\SentDex\images\\numbers\\0.1.png')
@@ -46,13 +65,18 @@ iar3 = np.array(i3)
  
 i4 = im.open('D:\SentDex\images\\sentdex.png')
 iar4 = np.array(i4)
+
+createExamples()
  
-threshold(iar2)
+#iar3 = threshold(iar3)
+#iar2 = threshold(iar2)
+#iar4 = threshold(iar4)
+ 
+'''
+threshold(iar)
 threshold(iar3)
+threshold(iar2)
 threshold(iar4)
- 
-#print iar
- 
  
 fig = plt.figure()
 ax1 = plt.subplot2grid((8,6),(0,0),rowspan = 4,colspan = 3)
@@ -66,4 +90,4 @@ ax3.imshow(iar3)
 ax4.imshow(iar4)
  
 plt.show()
- 
+ '''
